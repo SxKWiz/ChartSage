@@ -46,8 +46,15 @@ const TradingViewChart = forwardRef<TradingViewChartRef, TradingViewChartProps>(
       if (!chartContainerRef.current) return;
 
       const computedStyle = getComputedStyle(document.documentElement);
-      const textColor = `hsl(${computedStyle.getPropertyValue('--foreground').trim()})`
-      const borderColor = `hsl(${computedStyle.getPropertyValue('--border').trim()})`
+      const formatColor = (variable: string) => {
+        const colorValue = computedStyle.getPropertyValue(variable).trim();
+        // lightweight-charts expects hsl(h, s%, l%)
+        const [h, s, l] = colorValue.split(" ");
+        return `hsl(${h}, ${s}, ${l})`;
+      }
+
+      const textColor = formatColor('--foreground');
+      const borderColor = formatColor('--border');
       
       const chart = createChart(chartContainerRef.current, {
         layout: {
@@ -112,6 +119,7 @@ const TradingViewChart = forwardRef<TradingViewChartRef, TradingViewChartProps>(
           chartRef.current.remove();
         }
       };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
