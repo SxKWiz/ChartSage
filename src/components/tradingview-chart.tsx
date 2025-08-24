@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -44,20 +45,24 @@ const TradingViewChart = forwardRef<TradingViewChartRef, TradingViewChartProps>(
     useEffect(() => {
       if (!chartContainerRef.current) return;
 
+      const computedStyle = getComputedStyle(document.documentElement);
+      const textColor = computedStyle.getPropertyValue('--foreground').trim();
+      const borderColor = computedStyle.getPropertyValue('--border').trim();
+      
       const chart = createChart(chartContainerRef.current, {
         layout: {
           background: { color: "transparent" },
-          textColor: "hsl(var(--foreground))",
+          textColor: `hsl(${textColor})`,
         },
         grid: {
-          vertLines: { color: "hsl(var(--border))" },
-          horzLines: { color: "hsl(var(--border))" },
+          vertLines: { color: `hsl(${borderColor})` },
+          horzLines: { color: `hsl(${borderColor})` },
         },
         rightPriceScale: {
-          borderColor: "hsl(var(--border))",
+          borderColor: `hsl(${borderColor})`,
         },
         timeScale: {
-          borderColor: "hsl(var(--border))",
+          borderColor: `hsl(${borderColor})`,
           timeVisible: true,
           secondsVisible: false,
         },
