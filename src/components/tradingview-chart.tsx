@@ -46,23 +46,23 @@ const TradingViewChart = forwardRef<TradingViewChartRef, TradingViewChartProps>(
       if (!chartContainerRef.current) return;
 
       const computedStyle = getComputedStyle(document.documentElement);
-      const textColor = computedStyle.getPropertyValue('--foreground').trim();
-      const borderColor = computedStyle.getPropertyValue('--border').trim();
+      const textColor = `hsl(${computedStyle.getPropertyValue('--foreground').trim()})`
+      const borderColor = `hsl(${computedStyle.getPropertyValue('--border').trim()})`
       
       const chart = createChart(chartContainerRef.current, {
         layout: {
           background: { color: "transparent" },
-          textColor: `hsl(${textColor})`,
+          textColor: textColor,
         },
         grid: {
-          vertLines: { color: `hsl(${borderColor})` },
-          horzLines: { color: `hsl(${borderColor})` },
+          vertLines: { color: borderColor },
+          horzLines: { color: borderColor },
         },
         rightPriceScale: {
-          borderColor: `hsl(${borderColor})`,
+          borderColor: borderColor,
         },
         timeScale: {
-          borderColor: `hsl(${borderColor})`,
+          borderColor: borderColor,
           timeVisible: true,
           secondsVisible: false,
         },
