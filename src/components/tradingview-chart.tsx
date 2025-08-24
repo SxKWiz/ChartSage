@@ -48,8 +48,16 @@ const TradingViewChart = forwardRef<TradingViewChartRef, TradingViewChartProps>(
       const computedStyle = getComputedStyle(document.documentElement);
       const formatColor = (variable: string) => {
         const colorValue = computedStyle.getPropertyValue(variable).trim();
-        // lightweight-charts expects hsl(h, s%, l%)
+        if (!colorValue) {
+          console.warn(`CSS variable ${variable} not found`);
+          return '#000000'; // fallback color
+        }
+        // lightweight-charts expects hsl(h, s%, l%) with comma separation
         const [h, s, l] = colorValue.split(" ");
+        if (!h || !s || !l) {
+          console.warn(`Invalid color format for ${variable}: ${colorValue}`);
+          return '#000000'; // fallback color
+        }
         return `hsl(${h}, ${s}, ${l})`;
       }
 
